@@ -15,6 +15,3 @@ QR Code
 1. Clone the Project
 2. Go to the working directory
 3. npm run dev
-
-# Quesitons
-Reach out to me on <a href="https://linkedin.com/in/MadhuPIoT">LinkedIn</a>
