@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Fake Product Scanner</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/style.css">
+
+	</head>
+	<body>
+	<section class="ftco-section">
+		<div class="container-fluid px-md-5">
+			<div class="row justify-content-between">
+				<div class="col-md-8 order-md-last">
+					<div class="row">
+						<div class="col-md-6 text-center">
+							<a class="navbar-brand" href="index.html">verETHfy <span>BLOCKCHAIN BASED FAKE PRODUCT IDENTIFICATION</span></a>
+						</div>
+						<!-- <div class="col-md-6 d-md-flex justify-content-end mb-md-0 mb-3">
+							<form action="#" class="searchform order-lg-last">
+			          <div class="form-group d-flex">
+			            <input type="text" class="form-control pl-3" placeholder="Search">
+			            <button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span></button>
+			          </div>
+			        </form>
+						</div> -->
+					</div>
+				</div>
+				<div class="col-md-4 d-flex">
+					<div class="social-media">
+		    		<p class="mb-0 d-flex">
+		    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a>
+		    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
+		    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
+		    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
+		    		</p>
+	        </div>
+				</div>
+			</div>
+		</div>
+
+	</section>
+    <section>
+        <div class="welcome-page">
+        <div class="welcome-text">
+            <div class="welcome-text-heading">WELCOME!</div>
+            <div class="welcome-text-footing">With verETHfy you can register and verify the integrity<br /> of all your products and save them from counterfeits!</div>
+        </div>
+        <div class="homepage-options">
+            <div class="verify-option">
+                <div class="verify-option-image">
+                    <img src="https://i.ibb.co/QJ5DGQL/vecteezy-3d-qr-code-scanning-for-online-shopping-concept-shopping-8147260-removebg-preview.png" alt="scan" height="250">
+                </div>
+                <div class="verify-option-button"><a href="/index.html">Verify Product</a></div>
+                <div class="verify-option-text">Scan a QR Code to verify the<br /> authenticity of your product</div>
+            </div>
+            <div class="register-option">
+                <div class="register-option-image">
+                    <img src="https://i.ibb.co/DRBZzXB/vecteezy-a-blue-notepad-with-green-check-marks-and-a-checklist-icon-20795731-removebg-preview.png" alt="register" height="250">
+                </div>
+                <div class="register-option-button"><a href="/manufacturer.html">Register Product</a></div>
+                <div class="register-option-text">Register your product on Blockchain<br /> and get a QR Code</div>
+            </div>
+        </div>
+    </div>
+    </section>
+    
+	<br/>
+	
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/popper.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script src="js/web3.min.js"></script>
+  <script src="js/truffle-contract.js"></script>
+  <script src="js/fakeapp.js"></script>
+<script>
+    function docReady(fn) {
+        // see if DOM is already available
+        if (document.readyState === "complete"
+            || document.readyState === "interactive") {
+            // call on next available tick
+            setTimeout(fn, 1);
+        } else {
+            document.addEventListener("DOMContentLoaded", fn);
+        }
+    }
+
+    docReady(function () {
+        var resultContainer = document.getElementById('qr-reader-results');
+        var lastResult, countResults = 0;
+        function onScanSuccess(decodedText, decodedResult) {
+            if (decodedText !== lastResult) {
+                ++countResults;
+                lastResult = decodedText;
+                // Handle on success condition with the decoded message.
+                var audio = new Audio('beep.wav');
+                audio.play();
+                console.log(`Scan result ${decodedText}`, decodedResult);
+                document.getElementById('qr-reader-results').innerHTML=decodedText;
+				App.init(decodedText);
+                
+            }
+        }
+
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess);
+    });
+</script>
+	</body>
+</html>
+
+
+
+
