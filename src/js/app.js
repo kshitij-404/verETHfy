@@ -3,74 +3,82 @@ App = {
     web3Provider: null,
     contracts: {},
 
-    init: async function() {
+    init: async function () {
         return await App.initWeb3();
     },
 
-    initWeb3: function() {
-        if(window.web3) {
-            App.web3Provider=window.web3.currentProvider;
+    initWeb3: function () {
+        if (window.web3) {
+            App.web3Provider = window.web3.currentProvider;
         } else {
-            App.web3Provider=new Web3.proviers.HttpProvider('http://localhost:8545');
+            App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545');
         }
 
         web3 = new Web3(App.web3Provider);
         return App.initContract();
     },
 
-    initContract: function() {
+    initContract: function () {
 
-        $.getJSON('product.json',function(data){
+        $.getJSON('product.json', function (data) {
 
-            var productArtifact=data;
-            App.contracts.product=TruffleContract(productArtifact);
+            var productArtifact = data;
+            App.contracts.product = TruffleContract(productArtifact);
             App.contracts.product.setProvider(App.web3Provider);
         });
 
         return App.bindEvents();
     },
 
-    bindEvents: function() {
+    bindEvents: function () {
 
-        $(document).on('click','.btn-register',App.registerProduct);
+        $(document).on('click', '.btn-register', App.registerProduct);
     },
 
-    registerProduct: function(event) {
+    registerProduct: function (event) {
         event.preventDefault();
 
         var productInstance;
 
         var productId = document.getElementById('productId').value;
+        var pName = document.getElementById('pName').value;
+        var pCost = document.getElementById('pCost').value;
         var pOwner = document.getElementById('pOwner').value;
-        
-        web3.eth.getAccounts(function(error,accounts){
+        var locationM = document.getElementById('locationM').value;
+        var pDate = document.getElementById('pDate').value;
 
-            if(error) {
+        web3.eth.getAccounts(function (error, accounts) {
+
+            if (error) {
                 console.log(error);
             }
 
-            var account=accounts[0];
+            var account = accounts[0];
             console.log(account);
 
-            App.contracts.product.deployed().then(function(instance){
-                productInstance=instance;
-                return productInstance.setProduct(web3.fromAscii(productId),web3.fromAscii(pOwner),{from:account});
-            }).then(function(result){
+            App.contracts.product.deployed().then(function (instance) {
+                productInstance = instance;
+                return productInstance.setProduct(web3.fromAscii(productId), web3.fromAscii(pName), web3.fromAscii(pCost), web3.fromAscii(pOwner), web3.fromAscii(locationM), web3.fromAscii(pDate), { from: account });
+            }).then(function (result) {
                 console.log(result);
                 window.location.reload();
-                document.getElementById('productId').innerHTML='';
-                document.getElementById('pOwner').innerHTML='';
+                document.getElementById('productId').innerHTML = '';
+                document.getElementById('pName').innerHTML = '';
+                document.getElementById('pCost').innerHTML = '';
+                document.getElementById('pOwner').innerHTML = '';
+                document.getElementById('locationM').innerHTML = '';
+                document.getElementById('pDate').innerHTML = '';
 
-            }).catch(function(err){
+            }).catch(function (err) {
                 console.log(err.message);
             });
         });
     }
 };
 
-$(function() {
+$(function () {
 
-    $(window).load(function() {
+    $(window).load(function () {
         App.init();
     })
 })
